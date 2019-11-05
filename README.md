@@ -5,7 +5,10 @@
 ### Example of usage
 
 ``` 
-$ python3 main.py examples/pizza.xml pizza_graph
+$ python3 main.py file examples/pizza.xml pizza_graph
+```
+``` 
+$ python3 main.py dir examples
 ```
 
 ### Help 

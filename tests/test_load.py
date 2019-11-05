@@ -6,9 +6,9 @@ from unittest import TestCase
 from redis import Redis
 from redisgraph import Edge as RedisEdge
 
-from src.graph import Graph as RedisGraph
-from src.loader import load_in_redis, make_node
-from src.triplet_loader import load_rdf_graph
+from src.redis_loader.graph import Graph as RedisGraph
+from src.redis_loader.loader import load_in_redis, make_node
+from src.redis_loader.triplet_loader import load_rdf_graph
 
 
 def print_edge_with_alias(edge: RedisEdge, alias: str):

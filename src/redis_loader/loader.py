@@ -26,7 +26,7 @@ def load_in_redis(rdf_graph, redis_graph: RedisGraph):
         all_nodes.setdefault(str(subj), make_node(str(subj)))
         all_nodes.setdefault(str(obj), make_node(str(obj)))
 
-    print('Add all nodes to redis graph')
+    print(f'{redis_graph.name}: Add all nodes to redis graph')
     for k, v in tqdm(all_nodes.items()):
         redis_graph.add_node(v)
         if len(redis_graph.nodes) > BLOCK_SIZE:
@@ -36,7 +36,7 @@ def load_in_redis(rdf_graph, redis_graph: RedisGraph):
     # Create index over Nodes
     redis_graph.query("CREATE INDEX ON :Node(sha256)")
 
-    print('Add edges to existing nodes')
+    print(f'{redis_graph.name}: Add edges to existing nodes')
     for subj, pred, obj in tqdm(rdf_graph):
         edge = RedisEdge(all_nodes[str(subj)], pred, all_nodes[str(obj)])
         edge_r = RedisEdge(all_nodes[str(obj)], f'{pred}_r', all_nodes[str(subj)])
