@@ -6,28 +6,28 @@ from unittest import TestCase
 from redis import Redis
 from redisgraph import Edge as RedisEdge
 
-from src.graph import Graph as RedisGraph
-from src.loader import load_in_redis, make_node
-from src.triplet_loader import load_rdf_graph
+from src.rdf_loader.graph import Graph as RedisGraph
+from src.rdf_loader.loader import load_in_redis, make_node
+from src.rdf_loader.triplet_loader import load_rdf_graph
 
 
 def print_edge_with_alias(edge: RedisEdge, alias: str):
     return f'{edge.src_node}-[{alias}: {edge.relation} {edge.toString()}]->{edge.dest_node}'
 
 
-class TestLoad(TestCase):
+class TestRdfLoader(TestCase):
     def setUp(self):
         logging.disable(logging.WARNING)
         self.redis_connector = Redis(host='localhost', port=6379)
 
     def testLoadTxt(self):
-        self.loadAndCheck(load_rdf_graph('examples/graph.txt'))
+        self.loadAndCheck(load_rdf_graph('resources/rdf/graph.txt'))
 
     def testSmallXml(self):
-        self.loadAndCheck(load_rdf_graph('examples/graph.xml'))
+        self.loadAndCheck(load_rdf_graph('resources/rdf/graph.xml'))
 
     def testBigXml(self):
-        self.loadAndCheck(load_rdf_graph('examples/pizza.xml'))
+        self.loadAndCheck(load_rdf_graph('resources/rdf/pizza.xml'))
 
     def loadAndCheck(self, rdf_graph):
         redis_graph = RedisGraph(self.randomGraphName(), self.redis_connector)

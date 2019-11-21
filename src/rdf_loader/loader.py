@@ -49,7 +49,7 @@ def load_in_redis(rdf_graph, redis_graph: RedisGraph):
     redis_graph.flush_edges()
 
 
-def load(rdf_file: str, redis_graph_name: str, redis_host: str, redis_port: int):
+def rdf_load(rdf_file: str, redis_graph_name: str, redis_host: str, redis_port: int):
     rdf_graph = load_rdf_graph(rdf_file)
 
     redis_connector = Redis(host=redis_host, port=redis_port)

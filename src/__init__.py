@@ -1,1 +1,3 @@
-from .loader import load
+from .rdf_loader import *
+from .runner import *
+from .statistic import *

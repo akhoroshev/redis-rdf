@@ -1,6 +1,10 @@
-from src import load
-from argparse import ArgumentParser
+#!/usr/bin/python3
+
+
 import logging
+from argparse import ArgumentParser
+
+from src import rdf_load
 
 
 def main():
@@ -13,7 +17,7 @@ def main():
 
     logging.disable(logging.WARNING)
 
-    load(args.RDF_PATH, args.GRAPH_NAME, args.host, args.port)
+    rdf_load(args.RDF_PATH, args.GRAPH_NAME, args.host, args.port)
 
 
 if __name__ == "__main__":
