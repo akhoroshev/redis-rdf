@@ -5,6 +5,7 @@ from unittest import TestCase
 
 from redis import Redis
 from redisgraph import Edge as RedisEdge
+from tqdm import tqdm
 
 from src.rdf_loader.graph import Graph as RedisGraph
 from src.rdf_loader.loader import load_in_redis, make_node
@@ -40,7 +41,7 @@ class TestRdfLoader(TestCase):
         load_in_redis(rdf_graph, redis_graph)
 
         # check every edge
-        for subj, pred, obj in rdf_graph:
+        for subj, pred, obj in tqdm(rdf_graph):
             self.assertTrue(self.checkEdgeExist(redis_graph, self.makeEdge(subj, pred, obj)))
             self.assertTrue(self.checkEdgeExist(redis_graph, self.makeEdge(obj, f'{pred}_r', subj)))
 
