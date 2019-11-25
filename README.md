@@ -1,15 +1,33 @@
-[![Build Status](https://travis-ci.org/akhoroshev/redis-tools.svg?branch=dev)](https://travis-ci.org/akhoroshev/redis-rdf)
+[![Build Status](https://travis-ci.org/akhoroshev/redis-tools.svg?branch=master)](https://travis-ci.org/akhoroshev/redis-tools)
 
-### RDF loader in Redis Graph
+# Redis-tools
+## Rdf loader
 
-### Example of usage
+Loads RDF graph in ReddisGraph
+
+##### Example of usage
 
 ``` 
-$ python3 main.py examples/pizza.xml pizza_graph
+$ ./rdf_loader.py examples/pizza.xml
 ```
 
-### Help 
+##### Help 
 
 ``` 
-$ python3 main.py -h 
+$ ./rdf_loader.py -h 
+```
+
+## CFPQ query runner
+
+Runs a cfpq query and collect statistics and results
+
+##### Example of usage
+
+``` 
+$ ./cfpq_runner.py --algo ALGO_NAME --repeat 3 --port 6380 --prof gpu SUITE_PATH
+```
+##### Help 
+
+``` 
+$ ./cfpq_runner.py -h 
 ```
