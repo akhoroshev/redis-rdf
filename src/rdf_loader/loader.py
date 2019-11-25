@@ -13,7 +13,7 @@ BLOCK_SIZE = 100
 def make_node(value: str, alias=None):
     return RedisNode(
         label='Node', alias=alias, properties={
-            'value': value,
+            'value': value.replace('"', ''),
             'sha256': hashlib.sha256(str(value).encode('utf-8')).hexdigest()
         })
 

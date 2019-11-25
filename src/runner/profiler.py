@@ -19,6 +19,7 @@ class GpuMemDeltaProfiler(IProfiler, Thread):
         self.stopped = False
         self.mem_offset = self.__mem()
         self.mem_max = 0
+        self.daemon = True
 
     @staticmethod
     def __mem():

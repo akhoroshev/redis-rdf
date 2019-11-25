@@ -32,7 +32,7 @@ def parse_result(items: List[Any]) -> List[Tuple[str, Any]]:
 def load_suite(path: str) -> List[Tuple[str, str]]:
     result = list()
     with open(path, 'r') as csvfile:
-        suite_reader = csv.reader(csvfile, delimiter=',')
+        suite_reader = csv.reader(filter(lambda row: row[0] != '#', csvfile), delimiter=',')
         for row in suite_reader:
             result.append((row[0].strip(), row[1].strip()))
     return result
@@ -47,7 +47,7 @@ def main():
     parser.add_argument('--host', help='redis host name', default='localhost')
     parser.add_argument('--port', help='redis port', default=6379)
     parser.add_argument('--out', help='response output dir path', default='cfpq_results')
-    parser.add_argument('--repeat', help='repeat count', default=5)
+    parser.add_argument('--repeat', help='repeat count', type=int, default=5)
     args = parser.parse_args()
 
     mem_profiler_factory = None
@@ -59,10 +59,12 @@ def main():
 
     statistic = defaultdict(list)
     try:
-        for graph_name, grammar_path in tqdm(suite):
+        suite_range = tqdm(suite)
+        for graph_name, grammar_path in suite_range:
             for algo in args.algo:
+                suite_range.set_description(f'Processing {graph_name} {Path(grammar_path).name} {algo}')
                 res_repeats = list()
-                for _ in range(args.repeat):
+                for _ in tqdm(range(args.repeat), leave=False):
                     res = run_command(redis_instance, ('graph.cfg', algo, graph_name, grammar_path), args.pid,
                                       mem_profiler_factory)
                     res_repeats.append(parse_result(res))
@@ -71,8 +73,10 @@ def main():
                 statistic['algo'].append(algo)
                 for key, value in create_statistic(res_repeats).items():
                     statistic[key].append(value)
-    except KeyboardInterrupt:
-        pass
+    except (KeyboardInterrupt, redis.exceptions.ConnectionError):
+        print("Interrupted, saving results...")
+    except redis.exceptions.ConnectionError:
+        print("Connection error, saving results...")
 
     path_result = f'{args.out}/{Path(args.TEST_SUIT_PATH).stem}'
     if not os.path.isdir(path_result):

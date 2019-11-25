@@ -29,6 +29,9 @@ class TestRdfLoader(TestCase):
     def testBigXml(self):
         self.loadAndCheck(load_rdf_graph('resources/rdf/pizza.xml'))
 
+    def testBiggestXml(self):
+        self.loadAndCheck(load_rdf_graph('resources/rdf/eclass_514en.xml'))
+
     def loadAndCheck(self, rdf_graph):
         redis_graph = RedisGraph(self.randomGraphName(), self.redis_connector)
 

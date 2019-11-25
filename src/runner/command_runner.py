@@ -1,4 +1,5 @@
 from typing import Tuple, List, Any, Callable
+from time import sleep
 
 from redis import Redis
 
@@ -13,6 +14,7 @@ def run_command(redis_instance: Redis,
                    redis_instance.execute_command(*redis_command)]
     if mem_profiler_factory:
         profiler = mem_profiler_factory()
+        sleep(1)
         profiler.begin(redis_pid)
         cmd_result = cmd()
         mem_usage = profiler.end()
