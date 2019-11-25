@@ -13,11 +13,12 @@ def main():
     parser.add_argument('GRAPH_NAME', help='redis graph name')
     parser.add_argument('--host', help='redis host name', default='localhost')
     parser.add_argument('--port', help='redis port', default=6379)
+    parser.add_argument('--format', help='rdf file format', default=None)
     args = parser.parse_args()
 
     logging.disable(logging.WARNING)
 
-    rdf_load(args.RDF_PATH, args.GRAPH_NAME, args.host, args.port)
+    rdf_load(args.RDF_PATH, args.GRAPH_NAME, args.host, args.port, rdf_format=args.format)
 
 
 if __name__ == "__main__":

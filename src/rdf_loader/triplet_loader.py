@@ -22,8 +22,8 @@ def uri_to_name(identifier, rdf_graph: rdflib.Graph):
     return identifier
 
 
-def load_rdf_graph(rdf_file: str):
-    rdf_format = pathlib.Path(rdf_file).suffix[1:]
+def load_rdf_graph(rdf_file: str, rdf_format=None):
+    rdf_format = pathlib.Path(rdf_file).suffix[1:] if rdf_format is None else rdf_format
     if rdf_format == 'txt':
         return load_triplets(rdf_file)
     else:

@@ -30,7 +30,8 @@ class TestRdfLoader(TestCase):
         self.loadAndCheck(load_rdf_graph('resources/rdf/pizza.xml'))
 
     def testBiggestXml(self):
-        self.loadAndCheck(load_rdf_graph('resources/rdf/eclass_514en.xml'))
+        self.loadAndCheck(
+            load_rdf_graph('http://www.ebusiness-unibw.org/ontologies/eclass/5.1.4/eclass_514en.owl', 'xml'))
 
     def loadAndCheck(self, rdf_graph):
         redis_graph = RedisGraph(self.randomGraphName(), self.redis_connector)
