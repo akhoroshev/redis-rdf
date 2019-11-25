@@ -32,18 +32,19 @@ class TestRdfLoader(TestCase):
 
     def testBiggestXml(self):
         self.loadAndCheck(
-            load_rdf_graph('http://www.ebusiness-unibw.org/ontologies/eclass/5.1.4/eclass_514en.owl', 'xml'))
+            load_rdf_graph('http://www.ebusiness-unibw.org/ontologies/eclass/5.1.4/eclass_514en.owl', 'xml'), True)
 
-    def loadAndCheck(self, rdf_graph):
+    def loadAndCheck(self, rdf_graph, check_only_count=False):
         redis_graph = RedisGraph(self.randomGraphName(), self.redis_connector)
 
         # load
         load_in_redis(rdf_graph, redis_graph)
 
-        # check every edge
-        for subj, pred, obj in tqdm(rdf_graph):
-            self.assertTrue(self.checkEdgeExist(redis_graph, self.makeEdge(subj, pred, obj)))
-            self.assertTrue(self.checkEdgeExist(redis_graph, self.makeEdge(obj, f'{pred}_r', subj)))
+        if not check_only_count:
+            # check every edge
+            for subj, pred, obj in tqdm(rdf_graph):
+                self.assertTrue(self.checkEdgeExist(redis_graph, self.makeEdge(subj, pred, obj)))
+                self.assertTrue(self.checkEdgeExist(redis_graph, self.makeEdge(obj, f'{pred}_r', subj)))
 
         # check total edges count
         self.assertEqual(len(rdf_graph) * 2, self.countEdges(redis_graph))
